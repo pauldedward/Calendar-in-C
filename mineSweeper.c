@@ -261,9 +261,9 @@ int main()
             printf("\nYou Won");
             break;
         }
-        printf("\nContinue ? [y] :");
+        
 
-    }while(getch() == 'y');
+    }while(1);
 
     return 0;
 }
