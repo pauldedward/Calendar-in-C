@@ -200,7 +200,7 @@ int main()
     int row, column, noOfMine, inputRow, inputColumn,visited = 0;
 
     system("cls");
-    printf("\nNote : max-grid size(1000 Tiles) & no of mines < grid\n");
+    printf("\nNote : max-grid size(1000 Tiles) & No of mines < grid:(row X column)\n");
 
     printf("\nEnter no of rows :",&row);
     scanf("%d",&row);
@@ -232,9 +232,21 @@ int main()
     {
         printf("\nEnter your Choice (row column):");
         scanf("%d %d", &inputRow, &inputColumn);
+	while(getchar() != '\n');
 
         inputRow -= 1;
         inputColumn -= 1;
+	    
+	if(inputColumn < 0 || inputColumn >= column || inputRow < 0 || inputRow >= row)
+        {
+            system("cls");
+            printGrid(row, column, BoxArray);
+            printf("\n\tInvalid input\n\tTry again ?[y] :");
+            if(getch() == 'y')
+            {
+                continue;
+            }
+        }
 
         if((BoxArray[inputRow][inputColumn]->visited == 0) && (BoxArray[inputRow][inputColumn]->isMine == 0))
         {
@@ -251,14 +263,14 @@ int main()
             BoxArray[inputRow][inputColumn]->content = 'X';
 
             printGrid(row, column, BoxArray);
-            printf("\nGameOver");
+            printf("\n..........GameOver..........\n");
             break;
         }
 
         if( ( (column * row) - noOfMine ) <= visited )
         {
             printGrid(row, column, BoxArray);
-            printf("\nYou Won");
+            printf("\n..........You Won..........\n");
             break;
         }
         
