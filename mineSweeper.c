@@ -24,7 +24,7 @@ int generateNeighbours( int row, int column, struct Box* BoxArray[row][column] )
 
 int main()
 {
-    int row, column, noOfMine, inputRow, inputColumn,visited = 0;
+    int row, column, noOfMine, inputRow, inputColumn,visitedBoxes = 0;
 
     system("cls");
     printf("\nNote : max-grid size(1000 Tiles) & No of mines < grid:(row X column)\n");
@@ -78,7 +78,7 @@ int main()
         if( (BoxArray[inputRow][inputColumn]->visited == 0) && (BoxArray[inputRow][inputColumn]->isMine == 0) )
         {
             BoxArray[inputRow][inputColumn]->visited = 1;
-            visited++;
+            visitedBoxes++;
             BoxArray[inputRow][inputColumn]->content = BoxArray[inputRow][inputColumn]->neighbourMines + '0';
 
             printGrid(row, column, BoxArray);
@@ -93,7 +93,7 @@ int main()
             break;
         }
 
-        if( ( (column * row) - noOfMine ) <= visited )
+        if( ( (column * row) - noOfMine ) <= visitedBoxes )
         {
             printGrid(row, column, BoxArray);
             printf("\n..........You Won..........\n");
