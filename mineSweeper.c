@@ -8,8 +8,6 @@
 
 struct Box
 {
-    int row;
-    int col;
     int position;
     int neighbourMines;
     char content;
@@ -18,7 +16,7 @@ struct Box
 };
 
 
-int isInPositions(int random,  int randomArray[])
+int isInMinePositions(int random,  int randomArray[])
 {
     for(int index = 0; randomArray[index]; index++)
     {
@@ -36,20 +34,20 @@ int generateMinePostions(int minePositions[],int noOfMines, int max)
 
 	int index = 0, random;
 
-    srand(time(0));
+    	srand(time(0));
 
 	while(index < noOfMines)
 
-    {
-       random = (rand() % max ) + 1;
+    	{
+       		random = (rand() % max ) + 1;
 
-       if( isInPositions(random, minePositions) )
-       {
-          continue;
-       }
-       minePositions[index] = random;
-       index++;
-    }
+       		if( isInMinePositions(random, minePositions) )
+       		{
+          		continue;
+      		}
+       		minePositions[index] = random;
+       		index++;
+    	}
 
     return 0;
 }
@@ -58,11 +56,13 @@ void printGrid(int row, int column, struct Box* BoxArray[row][column])
     system("cls");
     printf("\n\n!.........MINESWEEPER.........!\n\n");
     printf("\n C  |");
+	
     for(int columnIndex = 0; columnIndex < column; columnIndex++)
     {
             printf(" %2d ",columnIndex + 1);
     }
     printf("\n R  |");
+	
     for(int columnIndex = 0; columnIndex < column; columnIndex++)
     {
              printf("____");
@@ -73,6 +73,7 @@ void printGrid(int row, int column, struct Box* BoxArray[row][column])
     for(int rowIndex = 0; rowIndex < row; rowIndex++)
     {
         printf("\n %2d |",rowIndex + 1);
+	    
         for(int columnIndex = 0; columnIndex < column; columnIndex++)
         {
             printf(" %2c ",BoxArray[rowIndex][columnIndex]->content);
@@ -84,7 +85,6 @@ int generateBoxes(int row, int column, int noOfMines, struct Box* BoxArray[row][
 {
     int sizeOfBoxArray = 0, totalBoxes, minePositions[noOfMines];
 
-
     totalBoxes =  row * column;
 
     generateMinePostions(minePositions, noOfMines, totalBoxes);
@@ -95,20 +95,16 @@ int generateBoxes(int row, int column, int noOfMines, struct Box* BoxArray[row][
         for(int columnIndex = 0; columnIndex < column; columnIndex++)
         {
             struct Box* box = (struct Box*) calloc(1,sizeof(struct Box));
-
-            box->row = rowIndex;
-            box->col = columnIndex;
+		
             box->position = sizeOfBoxArray++;
             box->content = '*';
-            box->isMine = isInPositions(box->position + 1, minePositions);
+            box->isMine = isInMinePositions(box->position + 1, minePositions);
             box->visited = 0;
             box->neighbourMines = 0;
             BoxArray[rowIndex][columnIndex] = box;
 
         }
     }
-
-
 
     return 0;
 }
@@ -248,16 +244,15 @@ int main()
             }
         }
 
-        if((BoxArray[inputRow][inputColumn]->visited == 0) && (BoxArray[inputRow][inputColumn]->isMine == 0))
+        if( (BoxArray[inputRow][inputColumn]->visited == 0) && (BoxArray[inputRow][inputColumn]->isMine == 0) )
         {
             BoxArray[inputRow][inputColumn]->visited = 1;
             visited++;
             BoxArray[inputRow][inputColumn]->content = BoxArray[inputRow][inputColumn]->neighbourMines + '0';
 
             printGrid(row, column, BoxArray);
-
-
-        };
+        }
+	    
         if(BoxArray[inputRow][inputColumn]->isMine == 1)
         {
             BoxArray[inputRow][inputColumn]->content = 'X';
