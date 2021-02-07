@@ -15,6 +15,96 @@ struct Box
     bool visited;
 };
 
+//Fuction definitions
+int isInMinePositions(int random,  int randomArray[] );
+int generateMinePostions(int minePositions[],int noOfMines, int max );
+void printGrid(int row, int column, struct Box* BoxArray[row][column] );
+int generateBoxes(int row, int column, int noOfMines, struct Box* BoxArray[row][column] );
+int generateNeighbours( int row, int column, struct Box* BoxArray[row][column] );
+
+int main()
+{
+    int row, column, noOfMine, inputRow, inputColumn,visited = 0;
+
+    system("cls");
+    printf("\nNote : max-grid size(1000 Tiles) & No of mines < grid:(row X column)\n");
+
+    printf("\nEnter no of rows :",&row);
+    scanf("%d",&row);
+
+    printf("\nEnter no of columns :",&column);
+    scanf("%d",&column);
+
+
+    printf("\nEnter no of mines :",&noOfMine);
+    scanf("%d",&noOfMine);
+
+    struct Box* BoxArray[row][column];
+
+    if( ( ( row * column ) > 1000 ) || ( noOfMine > (row * column ) ) )
+    {
+        printf("\n invalid input");
+        return 0;
+    }
+
+    system("cls");
+    printf("\n\n!.........MINESWEEPER.........!\n\n");
+
+    generateBoxes( row, column, noOfMine, BoxArray);
+    generateNeighbours( row, column, BoxArray);
+
+    printGrid(row, column, BoxArray);
+
+    do
+    {
+        printf("\nEnter your Choice (row column):");
+        scanf("%d %d", &inputRow, &inputColumn);
+	while(getchar() != '\n');
+
+        inputRow -= 1;
+        inputColumn -= 1;
+	    
+	if(inputColumn < 0 || inputColumn >= column || inputRow < 0 || inputRow >= row)
+        {
+            system("cls");
+            printGrid(row, column, BoxArray);
+            printf("\n\tInvalid input\n\tTry again ?[y] :");
+            if(getch() == 'y')
+            {
+                continue;
+            }
+        }
+
+        if( (BoxArray[inputRow][inputColumn]->visited == 0) && (BoxArray[inputRow][inputColumn]->isMine == 0) )
+        {
+            BoxArray[inputRow][inputColumn]->visited = 1;
+            visited++;
+            BoxArray[inputRow][inputColumn]->content = BoxArray[inputRow][inputColumn]->neighbourMines + '0';
+
+            printGrid(row, column, BoxArray);
+        }
+	    
+        if(BoxArray[inputRow][inputColumn]->isMine == 1)
+        {
+            BoxArray[inputRow][inputColumn]->content = 'X';
+
+            printGrid(row, column, BoxArray);
+            printf("\n..........GameOver..........\n");
+            break;
+        }
+
+        if( ( (column * row) - noOfMine ) <= visited )
+        {
+            printGrid(row, column, BoxArray);
+            printf("\n..........You Won..........\n");
+            break;
+        }
+        
+
+    }while(1);
+
+    return 0;
+}
 
 int isInMinePositions(int random,  int randomArray[])
 {
@@ -28,7 +118,7 @@ int isInMinePositions(int random,  int randomArray[])
 
     return 0;
 }
-
+	
 int generateMinePostions(int minePositions[],int noOfMines, int max)
 {
 
@@ -51,6 +141,7 @@ int generateMinePostions(int minePositions[],int noOfMines, int max)
 
     return 0;
 }
+
 void printGrid(int row, int column, struct Box* BoxArray[row][column])
 {
     system("cls");
@@ -81,6 +172,7 @@ void printGrid(int row, int column, struct Box* BoxArray[row][column])
         printf("\n    |");
     }
 }
+
 int generateBoxes(int row, int column, int noOfMines, struct Box* BoxArray[row][column])
 {
     int sizeOfBoxArray = 0, totalBoxes, minePositions[noOfMines];
@@ -187,90 +279,6 @@ int generateNeighbours( int row, int column, struct Box* BoxArray[row][column])
         }
     }
 
-
-    return 0;
-}
-
-int main()
-{
-    int row, column, noOfMine, inputRow, inputColumn,visited = 0;
-
-    system("cls");
-    printf("\nNote : max-grid size(1000 Tiles) & No of mines < grid:(row X column)\n");
-
-    printf("\nEnter no of rows :",&row);
-    scanf("%d",&row);
-
-    printf("\nEnter no of columns :",&column);
-    scanf("%d",&column);
-
-
-    printf("\nEnter no of mines :",&noOfMine);
-    scanf("%d",&noOfMine);
-
-    struct Box* BoxArray[row][column];
-
-    if( ( ( row * column ) > 1000 ) || ( noOfMine > (row * column ) ) )
-    {
-        printf("\n invalid input");
-        return 0;
-    }
-
-    system("cls");
-    printf("\n\n!.........MINESWEEPER.........!\n\n");
-
-    generateBoxes( row, column, noOfMine, BoxArray);
-    generateNeighbours( row, column, BoxArray);
-
-    printGrid(row, column, BoxArray);
-
-    do
-    {
-        printf("\nEnter your Choice (row column):");
-        scanf("%d %d", &inputRow, &inputColumn);
-	while(getchar() != '\n');
-
-        inputRow -= 1;
-        inputColumn -= 1;
-	    
-	if(inputColumn < 0 || inputColumn >= column || inputRow < 0 || inputRow >= row)
-        {
-            system("cls");
-            printGrid(row, column, BoxArray);
-            printf("\n\tInvalid input\n\tTry again ?[y] :");
-            if(getch() == 'y')
-            {
-                continue;
-            }
-        }
-
-        if( (BoxArray[inputRow][inputColumn]->visited == 0) && (BoxArray[inputRow][inputColumn]->isMine == 0) )
-        {
-            BoxArray[inputRow][inputColumn]->visited = 1;
-            visited++;
-            BoxArray[inputRow][inputColumn]->content = BoxArray[inputRow][inputColumn]->neighbourMines + '0';
-
-            printGrid(row, column, BoxArray);
-        }
-	    
-        if(BoxArray[inputRow][inputColumn]->isMine == 1)
-        {
-            BoxArray[inputRow][inputColumn]->content = 'X';
-
-            printGrid(row, column, BoxArray);
-            printf("\n..........GameOver..........\n");
-            break;
-        }
-
-        if( ( (column * row) - noOfMine ) <= visited )
-        {
-            printGrid(row, column, BoxArray);
-            printf("\n..........You Won..........\n");
-            break;
-        }
-        
-
-    }while(1);
 
     return 0;
 }
