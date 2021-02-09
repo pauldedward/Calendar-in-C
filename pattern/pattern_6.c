@@ -3,7 +3,7 @@
 
 int main()
 {
-    int number = 5,count = 0;
+    int number = 5;
 
     for(int i = number; i > 0; i--)
     {
