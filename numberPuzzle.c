@@ -43,7 +43,7 @@ int main()
 
         input = getInput(size);
         swapBoxes(boardSize,size, input, &blank, boxArray);
-        printf(" %d-%d ",blank,input);
+        
 
         if(checkWin(boardSize, boxArray))
         {
