@@ -25,7 +25,7 @@ int checkWin(int boardSize, struct Box* boxArray[]);
 //definitions
 int main()
 {
-    int blank, input;
+    int blank, input = 0;
     int size = 4;
     int boardSize = size*size;
     struct Box* boxArray[boardSize];
@@ -42,6 +42,11 @@ int main()
         printInstructions();
 
         input = getInput(size);
+        if(input == 0)
+        {   
+             printf("\n\tGAME OVER\n\n");
+            return 0;
+        }
         swapBoxes(boardSize,size, input, &blank, boxArray);
         
 
