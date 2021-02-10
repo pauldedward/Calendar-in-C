@@ -180,7 +180,7 @@ void swapBoxes(int boardSize, int size, int input, int* blank, struct Box* boxAr
         int max = temp % size;
         int min = *blank % size;
         int swap = max - min;
-        if((temp >= 0) && (temp < boardSize) && (swap != (size - 1)) && (swap != -(size - 1)) )
+        if((temp >= 0) && (temp < boardSize) && ( abs(swap) != (size - 1))  )
         {
             boxArray[*blank]->number = boxArray[*blank + input]->number;
             boxArray[*blank + input]->number = 0;
